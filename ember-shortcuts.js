@@ -138,7 +138,7 @@
 
   function targetIsNotInput(event) {
     var tagName = event.target.tagName;
-    return !(tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA');
+    return !(tagName === 'INPUT') && !(tagName === 'SELECT') && !(tagName === 'TEXTAREA');
   }
 
   Ember.Shortcuts = Ember.Object.extend({
