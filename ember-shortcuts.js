@@ -61,6 +61,7 @@
 
         if (handler.shortcuts && (action = handler.shortcuts[def.raw])) {
           handler.send(action, event);
+          event.preventDefault();
           return;
         }
       }
