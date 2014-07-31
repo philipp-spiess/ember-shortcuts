@@ -174,13 +174,14 @@
 
   Ember.Route.reopen({
     mergedProperties: ['shortcuts'],
-    registerShortcuts: function() {
-      if (!$.isEmptyObject(this.shortcuts)) {
-        this.clearShortcuts();
+    activate: function() {
+      if (Object.keys(this.shortcuts).length > 0) {
         register(Ember.keys(this.shortcuts));
       }
-    }.on('init'),
-
+    },
+    deactivate: function() {
+      this.clearShortcuts();
+    },
     clearShortcuts: function() {
       SHORTCUTS = {};
     },
