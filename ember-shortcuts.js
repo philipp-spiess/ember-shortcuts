@@ -126,9 +126,10 @@
     return { mods: mods, kc: kc, raw: spec };
   }
 
-  function register(shortcuts) {
+  function register(shortcuts, routeName) {
     forEach(shortcuts, function(spec) {
       var def = parse(spec);
+      def.routeName = routeName;
       if (!(def.kc in SHORTCUTS)) SHORTCUTS[def.kc] = [];
       SHORTCUTS[def.kc].push(def);
     });
@@ -158,7 +159,6 @@
       $doc.on('keyup.ember-shortcuts', clear);
       $win.on('focus.ember-shortcuts', reset);
       this.enable();
-
     },
 
     unbind: function() {
@@ -177,15 +177,27 @@
     mergedProperties: ['shortcuts'],
     activate: function() {
       if (Object.keys(this.shortcuts).length > 0) {
-        register(Ember.keys(this.shortcuts));
+        register(Ember.keys(this.shortcuts), this.routeName);
       }
     },
     deactivate: function() {
       this.clearShortcuts();
     },
     clearShortcuts: function() {
-      SHORTCUTS = {};
-    },
+      // Remove all shortcuts associated with this route,
+      // but retain shortcuts for other routes
+      var routeName = this.routeName;
+      Object.keys(SHORTCUTS).forEach(function(keyCode) {
+        var shortcutsForOtherRoutes = SHORTCUTS[keyCode].filter(function (shortcut) {
+            return shortcut.routeName !== routeName;
+          });
+        if (shortcutsForOtherRoutes.length > 0) {
+          SHORTCUTS[keyCode] = shortcutsForOtherRoutes;
+        } else {
+          delete SHORTCUTS[keyCode];
+        }
+      });
+    }
   });
 
   Ember.onLoad('Ember.Application', function(Application) {
