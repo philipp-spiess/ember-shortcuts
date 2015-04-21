@@ -1,9 +1,11 @@
 {
   "name": "ember-shortcuts",
   "main": "ember-shortcuts.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "authors": [
-    "Arun Srinivasan <rulfzid@gmail.com>"
+    "Arun Srinivasan <rulfzid@gmail.com>",
+    "Philipp Spieß <hello@philippspiess.com>",
+    "Benji Shine"
   ],
   "description": "Keyboard shortcuts for Ember applications",
   "keywords": [
